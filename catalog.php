@@ -53,12 +53,12 @@ if ($current_page < 1) {
 // determine the offset (number of items to skip) for the current page
 // for example: on page 3 with 8 item per page, the offset would be 16
 
-$offset = ($current_page - 1) * $item_per_page;
+$offset = ($current_page - 1) * $items_per_page;
 
 if(empty($section)) {
-    $catalog = full_catalog_array();
+    $catalog = full_catalog_array($items_per_page, $offset);
 } else {
-    $catalog = category_catalog_array($section);
+    $catalog = category_catalog_array($section,$items_per_page,$offset);
 }
 
 
