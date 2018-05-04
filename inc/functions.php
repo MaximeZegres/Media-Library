@@ -25,32 +25,30 @@ function full_catalog_array($limit = null, $offset = 0) {
     include("connection.php");
  
 try {
-    $sql = 
-    "SELECT media_id, title, category, img 
-    FROM Media
-    ORDER BY 
-         REPLACE(
+    $sql = "SELECT media_id, title, category,img 
+         FROM Media
+         ORDER BY 
            REPLACE(
-              REPLACE(title,'The ',''),
-              'An ',
-              ''
-           ),
-           'A ',
-           ''
-         )
-    )";
+             REPLACE(
+                REPLACE(title,'The ',''),
+                'An ',
+                ''
+             ),
+             'A ',
+             ''
+           )";
     if (is_integer($limit)) {
         $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
         $results->bindParam(1,$limit,PDO::PARAM_INT);
         $results->bindParam(2,$offset,PDO::PARAM_INT);
-    } else {
-    $results = $db->prepare($sql . " LIMIT ? OFFSET ?");
-    }
-    $results = execute();
+     } else {
+        $results = $db->prepare($sql);
+     }
+     $results->execute();
 } catch (Exception $e) {
     echo "Unable to retrieve results";
+    exit;
 }
-
     $catalog = $results->fetchAll();
     return $catalog;
 }
@@ -80,7 +78,8 @@ function category_catalog_array($category, $limit = null, $offset = 0) {
         } else {
         $results = $db->prepare($sql);
         $results->bindParam(1,$category,PDO::PARAM_STR);
-        }   
+        } 
+  
         $results->execute();
         
     } catch (Exception $e) {
